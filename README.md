@@ -15,9 +15,9 @@ This repository contains the R scripts used to analyze BAL microbiome data from 
 4. Differential abundance testing (MaAsLin2)  
 5. Visualization and figure generation  
 
-# ============================================================
+# ==================================
 # Microbiome Analysis of BAL Samples
-# ============================================================
+# ==================================
 
 # ---------------------------
 # Load Libraries
@@ -67,9 +67,9 @@ taxonomy <- data.frame(
 )
 rownames(taxonomy) <- rownames(abund_mat)
 
-# ============================================================
+# =====================
 # 1. Relative Abundance
-# ============================================================
+# =====================
 
 # -------- Phylum level --------
 phylum_abund <- aggregate(abund_rel, by=list(taxonomy$Phylum), sum)
@@ -136,9 +136,9 @@ ggplot(species_long, aes(SampleID, Abundance, fill=Species)) +
   facet_grid(. ~ Group, scales="free_x", space="free") +
   theme_classic()
 
-# ============================================================
+# ==================
 # 2. Alpha Diversity
-# ============================================================
+# ==================
 
 alpha_df <- data.frame(
   SampleID = colnames(abund_mat),
@@ -162,9 +162,9 @@ ggplot(alpha_long, aes(Group, Value, fill=Group)) +
   stat_compare_means(method="wilcox.test") +
   theme_classic()
 
-# ============================================================
+# =================
 # 3. Beta Diversity
-# ============================================================
+# =================
 
 # Bray-Curtis
 dist_bray <- vegdist(t(abund_rel), method="bray")
@@ -178,9 +178,9 @@ pcoa_jaccard <- pcoa(dist_jaccard)
 adonis2(dist_bray ~ Group, data=meta)
 adonis2(dist_jaccard ~ Group, data=meta)
 
-# ============================================================
+# =====================================
 # 4. Differential Abundance (MaAsLin2)
-# ============================================================
+# =====================================
 
 # Prepare species-level data
 abund$Species <- sapply(strsplit(abund[[1]], ";"), tail, 1)
@@ -206,9 +206,9 @@ fit <- Maaslin2(
   transform = "LOG"
 )
 
-# ============================================================
+# ==========================
 # 5. Top 20 Species Heatmap
-# ============================================================
+# ==========================
 
 df_long <- abund %>%
   mutate(Species = sub(".*;", "", abund[[1]])) %>%
